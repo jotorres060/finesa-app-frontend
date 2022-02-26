@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
+import { AuthService } from './services/auth.service';
+import { Router } from '@angular/router';
+import { finalize } from 'rxjs';
+
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
@@ -8,6 +12,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class AuthComponent implements OnInit {
 
+  public isLoading: boolean = false;
   public frmLogin: FormGroup = this.fb.group({
     email: ['', [
       Validators.required,
@@ -20,9 +25,14 @@ export class AuthComponent implements OnInit {
     ]]
   });
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    private _auth: AuthService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
+    localStorage.clear();
   }
 
   public onSubmit(): void {
@@ -31,13 +41,23 @@ export class AuthComponent implements OnInit {
       return;
     }
 
-    console.log( this.frmLogin.value );
+    this.isLoading = true;
+    this._auth.login(this.frmLogin.value)
+      .pipe(
+        finalize(() => this.isLoading = false)
+      )
+      .subscribe((data) => {
+        this.storeData(data);
+        this.router.navigateByUrl('/');
+      }, (err) => {
+        const message = err.error.data;
+        alert(message);
+      });
+  }
 
-    // this._residentes.crear(this.frmLogin.value)
-    //   .subscribe(() => {
-    //     this.message.mostrarMensaje('success', 'Residente creado exitosamente!');
-    //     this.ocultarFrmCrear();
-    //   });
+  private storeData(data: any): void {
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('userId', data.user.id);
   }
 
 }
