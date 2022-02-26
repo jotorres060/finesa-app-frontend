@@ -22,6 +22,10 @@ const routes: Routes = [
         loadChildren: () => import('./modules/home/home.module').then((m) => m.HomeModule)
       },
       {
+        path: 'products',
+        loadChildren: () => import('./modules/products/products.module').then((m) => m.ProductsModule)
+      },
+      {
         path: '**',
         pathMatch: 'full',
         component: NotFoundComponent

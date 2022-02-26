@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+
+import { BasicInterceptor } from './core/interceptors/basic.interceptor';
 
 import { AppRoutingModule } from './app-routing.module';
 import { PrimengModule } from './shared/primeng/primeng.module';
@@ -23,7 +25,9 @@ import { AppComponent } from './app.component';
     SharedModule,
     DashboardModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: BasicInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
