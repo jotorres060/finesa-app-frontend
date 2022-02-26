@@ -1,0 +1,21 @@
+a {
+  color: var(--primary-color) !important;
+}
+
+.gradient-custom-2 {
+  background: #4F46E5;
+  background: -webkit-linear-gradient(to right, #4F46E5, #6823e9);
+  background: linear-gradient(to right, #4F46E5, #6823e9);
+}
+
+@media (min-width: 768px) {
+  .gradient-form {
+    height: 100vh !important;
+  }
+}
+@media (min-width: 769px) {
+  .gradient-custom-2 {
+    border-top-right-radius: .3rem;
+    border-bottom-right-radius: .3rem;
+  }
+}
