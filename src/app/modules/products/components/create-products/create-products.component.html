@@ -1,1 +1,28 @@
-<p>create-products works!</p>
+<p-dialog [header]="dialogTitle" [(visible)]="showFrm" [modal]="true" [style]="{width: '50vw'}" (onHide)="hideFrm()"
+  [draggable]="false" [maximizable]="true" [resizable]="false" [closeOnEscape]="false">
+  <form [formGroup]="frmProduct" autocomplete="off">
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label" for="name">Nombre</label>
+        <input class="form-control p-inputtext-sm" formControlName="name" type="text" pInputText>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label class="form-label w-100" for="price">Precio</label>
+        <p-inputNumber class="w-100" styleClass="p-inputtext-sm w-100" formControlName="price" inputId="price"
+          [min]="0" [allowEmpty]="false" prefix="$">
+        </p-inputNumber>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label class="form-label w-100" for="state">Estado</label>
+        <p-selectButton [options]="['active', 'inactive']" formControlName="state"></p-selectButton>
+      </div>
+    </div>
+  </form>
+
+  <ng-template pTemplate="footer">
+    <button class="p-button-sm p-button-rounded p-button-text" type="button" pButton label="Cancelar" icon="pi pi-times" (click)="hideFrm()"></button>
+    <button class="p-button-sm p-button-raised p-button-rounded" type="button" pButton label="Guardar" icon="pi pi-check" (click)="onSubmit()" [disabled]="frmProduct.invalid"></button>
+  </ng-template>
+</p-dialog>

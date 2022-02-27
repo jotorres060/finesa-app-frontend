@@ -8,7 +8,6 @@ export class BasicInterceptor implements HttpInterceptor {
   constructor() { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    console.log( 'TOKEN: ', localStorage.getItem('token') );
     const httpHeaders = request.clone({
       setHeaders: {
         Accept: 'application/json',

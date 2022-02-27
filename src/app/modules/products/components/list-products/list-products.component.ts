@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { finalize } from 'rxjs';
 
 import { Product } from '../../models/product';
 import { ProductsService } from '../../services/products.service';
-import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-list-products',
@@ -12,6 +12,9 @@ import { finalize } from 'rxjs';
 export class ListProductsComponent implements OnInit {
 
   public products: Product[] = [];
+  public product: Product = new Product();
+  public dialogTitle: string = '';
+  public showFrm: boolean = false;
   public isLoading: boolean = false;
 
   constructor(private _products: ProductsService) { }
@@ -21,16 +24,26 @@ export class ListProductsComponent implements OnInit {
   }
 
   public getAll(): void {
+    this.showFrm = false;
     this.isLoading = true;
-    // const skip = (event) ? event.first : 0;
     this._products.getAll()
       .pipe(finalize(() => this.isLoading = false))
-      .subscribe((products: Product[]) => {
-        this.products = products;
-      }, (err) => {
-        const message = err.error.data;
-        alert(message);
+      .subscribe({
+        next: (products: Product[]) => this.products = products,
+        error: () => alert('Error interno.')
       });
+  }
+
+  public newProduct(): void {
+    this.product = new Product();
+    this.dialogTitle = 'Nuevo producto';
+    this.showFrm = true;
+  }
+
+  public editProduct(product: Product): void {
+    this.product = product;
+    this.dialogTitle = 'Editar producto';
+    this.showFrm = true;
   }
 
 }

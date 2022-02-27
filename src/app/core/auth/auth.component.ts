@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { finalize } from 'rxjs';
 
 import { AuthService } from './services/auth.service';
 import { Router } from '@angular/router';
-import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-auth',
@@ -43,21 +43,23 @@ export class AuthComponent implements OnInit {
 
     this.isLoading = true;
     this._auth.login(this.frmLogin.value)
-      .pipe(
-        finalize(() => this.isLoading = false)
-      )
-      .subscribe((data) => {
-        this.storeData(data);
-        this.router.navigateByUrl('/');
-      }, (err) => {
-        const message = err.error.data;
-        alert(message);
+      .pipe(finalize(() => this.isLoading = false))
+      .subscribe({
+        next: (data) => {
+          this.storeData(data);
+          this.router.navigateByUrl('/');
+        },
+        error: (err) => {
+          const message = err.error.data;
+          alert(message);
+        }
       });
   }
 
   private storeData(data: any): void {
     localStorage.setItem('token', data.token);
     localStorage.setItem('userId', data.user.id);
+    localStorage.setItem('userName', data.user.name);
   }
 
 }

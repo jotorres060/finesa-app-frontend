@@ -28,7 +28,7 @@ export class MenuBarComponent implements OnInit {
       },
       {
         label: 'Productos',
-        icon: 'pi pi-fw pi-list',
+        icon: 'pi pi-fw pi-shopping-bag',
         routerLink: '/products'
       },
       {
@@ -36,9 +36,10 @@ export class MenuBarComponent implements OnInit {
         icon: 'pi pi-fw pi-sign-out',
         command: () => {
           this._auth.logout()
-            .subscribe((_) => {
-              this.router.navigateByUrl('/login');
-            }, (err) => alert('Error interno.'));
+            .subscribe({
+              next: () => this.router.navigateByUrl('/login'),
+              error: () => alert('Error interno.')
+            });
         }
       }
     ];

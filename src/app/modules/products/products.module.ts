@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { ProductsRoutingModule } from './products-routing.module';
 import { PrimengModule } from '../../shared/primeng/primeng.module';
@@ -17,6 +18,7 @@ import { CreateProductsComponent } from './components/create-products/create-pro
   imports: [
     CommonModule,
     ProductsRoutingModule,
+    ReactiveFormsModule,
     PrimengModule
   ]
 })
