@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { of, switchMap } from 'rxjs';
 
 import { Product } from '../../models/product';
 import { ProductsService } from '../../services/products.service';
@@ -23,6 +24,8 @@ export class CreateProductsComponent implements OnInit, OnChanges {
   @Output()
   public hideFrmEvent = new EventEmitter<boolean>();
 
+  public productImage?: File;
+
   public frmProduct: FormGroup = this.fb.group({
     name: ['', [
       Validators.required,
@@ -35,11 +38,9 @@ export class CreateProductsComponent implements OnInit, OnChanges {
     state: ['', [
       Validators.required,
     ]],
-    // image_url: ['', [
-    //   Validators.required,
-    //   Validators.maxLength(250),
-    //   Validators.email
-    // ]],
+    image_url: ['', [
+      Validators.maxLength(250)
+    ]],
   });
 
   constructor(
@@ -71,11 +72,32 @@ export class CreateProductsComponent implements OnInit, OnChanges {
     this.product.state = this.frmProduct.value.state;
 
     const productMethod = (this.product.id) ? 'update' : 'store';
-    this._product[productMethod](this.product)
-      .subscribe({
-        next: () => this.hideFrm(),
-        error: () => alert('Error interno.')
-      });
+
+    if (this.productImage) {
+      const formData = new FormData();
+      formData.append("image", this.productImage);
+
+      this._product.uploadImage(formData)
+        .pipe(
+          switchMap((path) => {
+            this.product.image_url = path;
+            return this._product[productMethod](this.product)
+          })
+        ).subscribe({
+          next: () => this.hideFrm(),
+          error: () => alert('Error interno.')
+        });
+    } else {
+      this._product[productMethod](this.product)
+        .subscribe({
+          next: () => this.hideFrm(),
+          error: () => alert('Error interno.')
+        });
+    }
+  }
+
+  public onFileChange(event: any): void {
+    this.productImage = event.target.files[0];
   }
 
   public hideFrm(): void {

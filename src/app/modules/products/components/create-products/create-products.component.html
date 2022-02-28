@@ -18,6 +18,11 @@
         <label class="form-label w-100" for="state">Estado</label>
         <p-selectButton [options]="['active', 'inactive']" formControlName="state"></p-selectButton>
       </div>
+
+      <div class="col-md-6 mb-3">
+        <label class="form-label" for="image">Imágen (opcional)</label>
+        <input class="form-control" type="file" accept="image/*" (change)="onFileChange($event)">
+      </div>
     </div>
   </form>
 

@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost/finesa-app-back/public/api'
+  apiUrl: 'http://localhost/finesa-app-back/public/api',
+  baseUrl: 'http://localhost/finesa-app-back/public'
 };
 
 /*

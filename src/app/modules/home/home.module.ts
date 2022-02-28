@@ -2,8 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { HomeRoutingModule } from './home-routing.module';
-import { HomeComponent } from './home.component';
 import { PrimengModule } from '../../shared/primeng/primeng.module';
+import { ProductsModule } from '../products/products.module';
+
+import { HomeComponent } from './home.component';
 
 @NgModule({
   declarations: [
@@ -12,7 +14,8 @@ import { PrimengModule } from '../../shared/primeng/primeng.module';
   imports: [
     CommonModule,
     HomeRoutingModule,
-    PrimengModule
+    PrimengModule,
+    ProductsModule
   ]
 })
 export class HomeModule { }

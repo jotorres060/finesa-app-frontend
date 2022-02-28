@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 import { environment } from '../../../../environments/environment';
 
@@ -26,6 +26,10 @@ export class ProductsService {
 
   public update(product: Product): Observable<Product> {
     return this.http.put<Product>(`${ this.baseUrl }/${ product.id }`, product);
+  }
+
+  public uploadImage(formData: FormData): Observable<string> {
+    return this.http.post<string>(`${ this.baseUrl }/upload-image`, formData);
   }
   
 }

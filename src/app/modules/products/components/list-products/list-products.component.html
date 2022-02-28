@@ -5,6 +5,7 @@
     [rows]="10" [loading]="isLoading" [totalRecords]="products.length">
     <ng-template pTemplate="header">
       <tr>
+        <th>Imágen</th>
         <th>Nombre</th>
         <th>Precio</th>
         <th>Estado</th>
@@ -13,6 +14,7 @@
     </ng-template>
     <ng-template pTemplate="body" let-product>
       <tr>
+        <td><img class="img-fluid rounded" [src]="product | image" [alt]="product.name" width="100"></td>
         <td>{{ product.name }}</td>
         <td>${{ product.price | number }}</td>
         <td>
